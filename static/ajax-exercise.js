@@ -24,7 +24,7 @@ $('#weather-form').on('submit', (evt) => {
 
   $.get('/weather', formData, (response) => {
     // Fill in the callback function
-    console.log(response)
+    console.log(response);
     $('#weather-info').html(response['forecast']);
   });
 
@@ -39,10 +39,24 @@ $('#weather-form').on('submit', (evt) => {
 $("#order-form").on('submit', (evt) => {
   evt.preventDefault();
 
-  // TODO: create an object to store key-value pairs that'll be sent to
-  // the server
+  const formData = {
+    qty: $('#qty-field').val(),
+    melon_type: $('#melon-type-field').val()
+  };
 
-  // TODO: make a request to /order-melons
+  console.log(formData)
+
+
+  $.post('/order-melons', formData, (response) => {
+    console.log(response);
+    $('#order-status').html(response['msg']);
+    if (response['code'] === 'ERROR') {
+      $('#order-status').attr('style', 'color: red');
+    } else {
+      $('#order-status').attr('style', 'color: black');
+    }
+  });
+
   //
   // In the callback function, use the response from the server to
   // update #order-status. IMPORTANT: if the result code is 'ERROR',
